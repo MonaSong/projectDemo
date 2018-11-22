@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="assets/vue.js"></script>
+  <script src="assets/vuex.js"></script>
+  <script src="assets/element-ui-2.3.6.js"></script>
+  <link type="text/css" rel="stylesheet" href="assets/element-ui-2.3.6.css">
+  <title>vuex-demo</title>
+</head>
+<body>
+  <div id="app">
+    <h1>{{count}}</h1>
+    <plus-counter></plus-counter>
+    <subtract-counter></subtract-counter>
+  </div>
+
+  <script>
+    // store
+    const store = new Vuex.Store({
+      state: {
+        count: 0
+      },
+      mutations: {
+        increment (state) {
+          state.count++
+        },
+        decrement (state) {
+          state.count--
+        }
+      },
+      actions:{
+        plusCount ({commit}) {
+          commit('increment')
+        },
+        subtractCount ({commit}) {
+          commit('decrement')
+        }
+      }
+    })
+    
+    // plus counter component
+    const PlusCounter = {
+      template: `<el-button @click="plusData" type="primary">点击添加</el-button>`,
+      methods: {
+        plusData () {
+          this.$store.dispatch('plusCount');
+        }
+      }
+    }
+
+    // subtract counter component
+    const SubtractCounter = {
+      template: `<el-button @click="subtractData" type="primary">点击减少</el-button>`,
+      methods: {
+        subtractData () {
+          this.$store.dispatch('subtractCount')
+        }
+      }
+    }
+
+    // VM
+    new Vue({
+      store,
+      el: '#app',
+      components:{PlusCounter, SubtractCounter},
+      computed:{
+        count () {
+          return this.$store.state.count
+        }
+      }
+    })
+  </script>
+</body>
+</html>
+

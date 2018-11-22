@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>发布订阅模式</title>
+</head>
+<body>
+  <script>
+    // 发布 emit 订阅 on {}
+    function Girl() {
+        this._events = {}
+    }
+
+    // 存放函数
+    Girl.prototype.on = function (eventName,callback) {
+
+        //这里判断他是不是第一次添加(订阅)
+        if(this._events[eventName]){ 
+            this._events[eventName].push(callback); 
+        }else{
+            this._events[eventName] = [callback]
+        }
+    };
+
+    // 调用函数
+    Girl.prototype.emit = function (eventName,...args) { 
+        if(this._events[eventName]){
+            this._events[eventName].forEach(cb=>cb(...args));
+        }
+    };
+
+    let cry = (who) =>{console.log(who+'哭');};
+    let shopping = (who) =>{console.log(who+'购物');};
+    let eat = (who) =>{console.log(who+'吃');};
+    let smile=(who)=>{console.log(who+'笑')};
+
+    let girl1 = new Girl();
+    girl1.on('失恋',cry); 
+    girl1.on('失恋',eat);
+    girl1.on('失恋',shopping);
+    girl1.emit('失恋','小明');  
+
+    let girl2 = new Girl();
+    girl2.on('恋爱',shopping);
+    girl2.on('恋爱',smile);
+    girl2.emit('恋爱','小华');  
+  </script>
+</body>
+</html>

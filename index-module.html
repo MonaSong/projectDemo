@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="assets/vue.js"></script>
+  <script src="assets/vuex.js"></script>
+  <script src="assets/element-ui-2.3.6.js"></script>
+  <link type="text/css" rel="stylesheet" href="assets/element-ui-2.3.6.css">
+  <title>vuex-demo</title>
+</head>
+<body>
+  <div id="app">
+    <h1>{{count}}</h1>
+    <plus-counter></plus-counter>
+    <subtract-counter></subtract-counter>
+  </div>
+
+  <script>
+    // store
+    const store = new Vuex.Store({
+      getters: {},
+      modules: {
+        index: {
+          state: {
+            count: 0,
+          },
+          mutations: {
+            indexCount (state) {
+             state.count = this.state.plusInfo.count + this.state.subtractInfo.count
+            }
+          },
+          actions: {
+            indexCounter ({commit}) {
+              commit('indexCount')
+            }
+          }
+        },
+        plusInfo: {
+          state: {
+            count: 0,
+          },
+          mutations: {
+            plusCount (state) {
+              state.count++
+            }
+          },
+          actions: {
+            plusCounter ({commit}) {
+              commit('plusCount')
+            }
+          }
+        },
+        subtractInfo: {
+          state: {
+            count: 0,
+          },
+          mutations: {
+            subtractCount (state) {
+              state.count--
+            }
+          },
+          actions: {
+            subtractCounter ({commit}) {
+              commit('subtractCount')
+            }
+          }
+        }
+      }
+    })
+
+    // plus counter component
+    const PlusCounter = {
+      template: `<div><h1><span>加：</span>{{count}}</h1><el-button type="primary" @click="plusData">点击添加</el-button></div>`,
+      computed: {
+        count () {
+          return this.$store.state.plusInfo.count
+        }
+      },
+      methods: {
+        plusData () {
+          console.log(this.$store)
+          this.$store.dispatch('plusCounter')
+          this.$store.dispatch('indexCounter')
+        }
+      }
+    }
+
+    // subtract counter component
+    const SubtractCounter = {
+      template: `<div><h1><span>减：</span>{{count}}</h1><el-button type="primary" @click="subtractData">点击减少</el-button></div>`,
+      computed: {
+        count () {
+          return this.$store.state.subtractInfo.count
+        }
+      },
+      methods: {
+        subtractData () {
+          this.$store.dispatch('subtractCounter')
+          this.$store.dispatch('indexCounter')
+        }
+      }
+    }
+
+    // VM
+    new Vue({
+      store,
+      el: '#app',
+      components:{PlusCounter, SubtractCounter},
+      computed:{
+        count () {
+          return this.$store.state.index.count
+        }
+      }
+    })
+  </script>
+</body>
+</html>
