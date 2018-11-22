@@ -37,15 +37,15 @@
     let smile=(who)=>{console.log(who+'笑')};
 
     let girl1 = new Girl();
-    girl1.on('失恋',cry); 
-    girl1.on('失恋',eat);
-    girl1.on('失恋',shopping);
-    girl1.emit('失恋','小明');  
+    girl1.on('不开心',cry); 
+    girl1.on('不开心',eat);
+    girl1.on('不开心',shopping);
+    girl1.emit('不开心','小明');  
 
     let girl2 = new Girl();
-    girl2.on('恋爱',shopping);
-    girl2.on('恋爱',smile);
-    girl2.emit('恋爱','小华');  
+    girl2.on('开心',shopping);
+    girl2.on('开心',smile);
+    girl2.emit('开心','小华');  
   </script>
 </body>
 </html>
